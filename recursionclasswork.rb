@@ -152,23 +152,25 @@
 #     quicksort(left_side) + pivot_arr + quicksort(right_side)
 # end
 
-def bsearch(arr, target)
-    mid = arr.length / 2
-    return mid if arr[mid] == target
-    return nil if arr.empty?
+# def bsearch(arr, target)
+#     mid = arr.length / 2
+#     return mid if arr[mid] == target
+#     return nil if arr.empty?
 
-    left = arr[0...mid]
-    right = arr[mid+1..-1]
+#     left = arr[0...mid]
+#     right = arr[mid+1..-1]
    
-    if arr[mid] < target
-        right_check = bsearch(right, target)
-        return nil if right_check.nil?
-        left.length + right_check + 1
-    else
-        bsearch(left, target)
-    end
+#     if arr[mid] < target
+#         right_check = bsearch(right, target)
+#         return nil if right_check.nil?
+#         left.length + right_check + 1
+#     else
+#         bsearch(left, target)
+#     end
      
-end
+# end
+
+
 # if array[mid] < target
 #   mid = 3 + bsearch(array[2..-1], target)
 #   mid = 3 + 1 + bsearch([4, 5, 6], 6)
@@ -176,21 +178,85 @@ end
 #   mid = 3 + bsearch([6])
 #   mid = 3 +
 
-p bsearch([1, 2, 3], 1) # => 0
-p bsearch([2, 3, 4, 5], 3) # => 1
-p bsearch([2, 4, 6, 8, 10], 6) # => 2
-p bsearch([1, 3, 4, 5, 9], 5) # => 3
-p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
-p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
-p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
+# class Array
+#     def bsearch(target)
+#         mid = self.length / 2
+#         return mid if self[mid] == target
+#         return nil if self.empty?
+
+#         left = self[0...mid]
+#         right = self[mid+1..-1]
+#         if self[mid] < target
+#             right_check = right.bsearch(target)
+#             return nil if right_check.nil?
+#             mid + right_check + 1
+#         else
+#             left.bsearch(target)
+#         end
+#     end
+# end
+
+# p bsearch([1, 2, 3], 1) # => 0
+# p bsearch([2, 3, 4, 5], 3) # => 1
+# p bsearch([2, 4, 6, 8, 10], 6) # => 2
+# p bsearch([1, 3, 4, 5, 9], 5) # => 3
+# p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
+# p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
+# p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
+
+# a = [1, 3, 4, 5, 9]
+# p a.bsearch(5)
 
 
-def merge_sort(array)
-    return [] if array.length == 0
-    return array if array.length == 1
+# class Array
+#     def merge_sort
+#       return self if count < 2
+  
+#       middle = count / 2
+  
+#       left, right = self.take(middle), self.drop(middle)
+#       sorted_left, sorted_right = left.merge_sort, right.merge_sort
+  
+#       merge(sorted_left, sorted_right)
+#     end
+  
+#     def merge(left, right)
+#       merged_array = []
+#       until left.empty? || right.empty?
+#         merged_array << ((left.first < right.first) ? left.shift : right.shift)
+#       end
+  
+#       merged_array + left + right
+#     end
+# end
 
+def merge_sort(array) 
+    # if array only has one element or fewer there is nothing to do
+    if array.length <=1 
+        return array
+    end
+        # dividing and then merge-sorting the halves
+    mid = array.length/2
+    first_half = merge_sort(array[0...mid])
+    second_half = merge_sort(array[mid...array.length])
+    merge(first_half, second_half)
+  
 end
 
-def merge
-
+def merge(left_array, right_array)
+    sorted_array = []
+    # If either array is empty we don't need to compare them
+    while !left_array.empty? && !right_array.empty? do
+        # we are shifting out the compared/used values so we don't repeat
+        if left_array[0] < right_array[0]
+            sorted_array.push(left_array.shift)
+        else   
+            sorted_array.push(right_array.shift)
+        end
+    end 
+    #concat appends elements of another array to an array
+    return sorted_array.concat(left_array).concat(right_array)
 end
+
+p merge_sort([32,12,1,5,3,54,43,2,22])
+
